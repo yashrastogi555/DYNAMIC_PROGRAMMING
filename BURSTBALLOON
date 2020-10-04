@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int burstBalloon(vector<int>&arr)
+{
+    int n=arr.size();
+    int i,j,k;
+    arr.insert(arr.begin(),1);
+    arr.push_back(1);
+    vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+   
+    for(i=n;i>=1;i--)
+    {
+        for(j=i;j<=n;j++)
+        {
+            for(k=i;k<=j;k++)
+            {
+                int left=(k==i)?0:dp[i][k-1];
+                int right=(k==j)?0:dp[k+1][j];
+                int curr=arr[k]*arr[i-1]*arr[j+1];
+                dp[i][j]=max(dp[i][j],left+right+curr);
+            }
+        }
+    }
+    return dp[1][n];
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int>arr(n,0);
+    int i;
+    for(i=0;i<n;i++)
+    cin>>arr[i];
+    cout<<burstBalloon(arr);
+    
+}
